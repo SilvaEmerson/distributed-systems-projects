@@ -1,0 +1,15 @@
+{
+  "name": "mom",
+  "version": "1.0.0",
+  "description": "",
+  "main": "peer1.js",
+  "dependencies": {
+    "amqplib": "^0.5.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Émerson Silva",
+  "license": "ISC"
+}
