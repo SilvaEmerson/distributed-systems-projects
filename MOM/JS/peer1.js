@@ -8,6 +8,7 @@ const rl = readline.createInterface({
     prompt: '> '
 })
 
+
 amqp.connect('amqp://localhost', (error0, connection) => {
     if (error0) {
         throw error0;
@@ -17,22 +18,28 @@ amqp.connect('amqp://localhost', (error0, connection) => {
         if (error1) {
             throw error1;
         }
+
         channel.assertQueue(user1, {
             durable: false
         });
 
         rl.on('line', msg => {
-            channel.sendToQueue(user2, Buffer.from(msg));
+            let payload = JSON.stringify({
+                'username': process.argv[2],
+                'message': msg
+            })
+            channel.sendToQueue(user2, Buffer.from(payload));
             rl.prompt()
         })
 
         channel.consume(user1, function(msg) {
-            rl.clearLine()
-            console.log(`${msg.fields.deliveryTag}> ${msg.content.toString()}`);
+            let { username, message } = JSON.parse(msg.content.toString())
+            console.log(`<${username}> ${message}`);
             rl.prompt()
         }, {
             noAck: true
-        });
+        })
+
         rl.prompt()
     });
 });
