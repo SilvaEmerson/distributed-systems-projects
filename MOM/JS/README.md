@@ -6,6 +6,11 @@
 npm i
 ```
 
+## Managing users
+
+* To add users, edit `src/users.json` 
+* You can only connect with registered users
+
 ## Running
 
 ### Using Docker:
@@ -17,7 +22,7 @@ docker-compose up
 and in another shell section:
 
 ```shell
-node peer[1-2].js [username]
+node src/peer.js [host-username] [destiny-username]
 ```
 
 ### Don't using Docker
@@ -25,5 +30,5 @@ node peer[1-2].js [username]
 Considering you already have RabbitMQ installed on the machine:
 
 ```shell
-node peer[1-2].js [username]
+node src/peer.js [host-username] [destiny-username]
 ```

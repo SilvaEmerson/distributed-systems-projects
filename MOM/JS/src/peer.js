@@ -1,12 +1,24 @@
 const amqp = require('amqplib/callback_api');
 const readline = require('readline')
-const { user1, user2 } = require('./usersQueues.json')
+const usernames = require('./usersQueues.json').map(el => el.username)
 
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
     prompt: '> '
 })
+
+const sender = (usernames.includes(process.argv[2]))
+    ? process.argv[2]
+    : (() => {
+        throw "Sender username invalid"
+    })()
+
+const receiver = (usernames.includes(process.argv[3]))
+    ? process.argv[3]
+    : (() => {
+        throw "Receriver username invalid"
+    })()
 
 
 amqp.connect('amqp://localhost', (error0, connection) => {
@@ -19,20 +31,20 @@ amqp.connect('amqp://localhost', (error0, connection) => {
             throw error1;
         }
 
-        channel.assertQueue(user1, {
+        channel.assertQueue(sender, {
             durable: false
         });
 
         rl.on('line', msg => {
             let payload = JSON.stringify({
-                'username': process.argv[2],
+                'username': sender,
                 'message': msg
             })
-            channel.sendToQueue(user2, Buffer.from(payload));
+            channel.sendToQueue(receiver, Buffer.from(payload));
             rl.prompt()
         })
 
-        channel.consume(user1, function(msg) {
+        channel.consume(sender, function(msg) {
             let { username, message } = JSON.parse(msg.content.toString())
             console.log(`<${username}> ${message}`);
             rl.prompt()

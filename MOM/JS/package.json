@@ -2,7 +2,7 @@
   "name": "mom",
   "version": "1.0.0",
   "description": "",
-  "main": "peer1.js",
+  "main": "src/peer.js",
   "dependencies": {
     "amqplib": "^0.5.3"
   },
