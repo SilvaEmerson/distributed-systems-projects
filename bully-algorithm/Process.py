@@ -9,7 +9,7 @@ class Process:
         self.processes_ids = [*filter(lambda id: id != self.id, processes_ids)]
 
     def start_election(self):
-        print(f"Process {self.id} begin a election")
+        print(f"Process {self.id} started a election")
         greater_id = filter(
             lambda process: process.id > self.id, self.processes_ids
         )
@@ -33,7 +33,7 @@ class Process:
             next_process["process"].start_election()
         else:
             self.is_master = True
-            print(f"Process {self.id} is a master")
+            print(f"Process {self.id} is the master")
 
     def get_election_msg(self, process):
         if process.id < self.id:
